@@ -88,8 +88,9 @@ every push to `main` leaves the `.rbf` in the *Actions* tab, and pushing a
 - **wd1793**: Viacheslav Slavinsky and Sorgelig, adapted here for the Osborne
   disk formats.
 - **MiSTer framework** (`sys/`): Sorgelig and the MiSTer-devel community.
-- **Chameleon96 port**: Maverick (Maverick-Shark), from his TS2068_MiSTer
-  `ch96` branch; board documentation by Manuel Teira (teiram).
+- **Chameleon96**: MiSTer framework for the board by Manuel Teira (teiram),
+  [Template_MiSTer_ch96](https://github.com/teiram/Template_MiSTer_ch96);
+  first port by Maverick (Maverick-Shark).
 - **MAME** `osborne1` driver (Wilbert Pol, Vas Crabb and the MAME team): main
   hardware reference.
 

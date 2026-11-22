@@ -290,8 +290,9 @@ la imagen Docker `raetro/quartus:17.0`:
 - **wd1793**: Viacheslav Slavinsky y Sorgelig, adaptado aquí a los formatos
   del Osborne. GPL.
 - **Framework de MiSTer** (`sys/`): Sorgelig y la comunidad MiSTer-devel.
-- **Port a Chameleon96**: Maverick (Maverick-Shark), a partir de su rama
-  `ch96` de TS2068_MiSTer; documentación de la placa de Manuel Teira (teiram).
+- **Chameleon96**: framework de MiSTer para la placa de Manuel Teira (teiram),
+  [Template_MiSTer_ch96](https://github.com/teiram/Template_MiSTer_ch96);
+  primer port de Maverick (Maverick-Shark).
 
 **Referencias**
 

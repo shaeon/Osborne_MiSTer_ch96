@@ -17,20 +17,35 @@ RBF de la Chameleon96: los de la DE10-Nano se quitan al sincronizar.
 
 ## Qué cambia respecto a la DE10-Nano
 
-Basado en el port de TS2068_MiSTer de Maverick:
+`sys/` es el framework de MiSTer para la Chameleon96 de Manuel Teira,
+[teiram/Template_MiSTer_ch96](https://github.com/teiram/Template_MiSTer_ch96),
+copiado tal cual. Sobre el framework de MiSTer de la misma fecha que usa el
+repositorio principal, añade:
 
-- `ch96_top.sv` envuelve `sys_top` en los pines de la placa: vídeo RGB565 al
-  TDA19988 (HDMI), audio I2S, I2C del HDMI y LEDs.
-- La placa no tiene oscilador en la FPGA: los 50 MHz salen del HPS
-  (`h2f_user1_clk`), que `sys_top` y `sysmem` sacan como `clk_50m`.
-- El búfer del escalador (`ascal`) pasa a 0x1E800000 para caber en los 512 MB.
-- El HDMI va a 74,25 MHz (720p) y sin ALSA (`MISTER_DISABLE_ALSA`).
-- Revisión de Quartus `Osborne_ch96` (`Osborne_ch96.qpf/.qsf/.sdc`), con
-  `sys/pins_ch96.tcl`, `sys/hps_ch96.tcl` y `sys/pll_q22.qip`. `sys.qip` no
-  incluye `sys_top.sdc`: la Chameleon96 usa `Osborne_ch96.sdc`.
+- `sys/ch96_top.sv`, que envuelve `sys_top` en los pines de la placa: vídeo
+  RGB565 al TDA19988 (HDMI), audio I2S, I2C del HDMI, LEDs, ventilador y las
+  dos PSRAM QSPI del bus *loan I/O* del HPS.
+- Los 50 MHz salen del HPS (`h2f_user1_clk`), porque la placa no tiene
+  oscilador en la FPGA.
+- PWM para el ventilador de la placa.
+- Los búferes del escalador (0x1E800000) y de la rotación de pantalla
+  (0x1C000000) caben en los 512 MB.
+- HDMI a 74,25 MHz (720p), OSD en color y sin ALSA (`MISTER_DISABLE_ALSA`).
+- Puertos `PSRAM_*`, `PSRAM2_*` y `CLK_100M` para el core.
+- Revisión de Quartus `Osborne_ch96` (`Osborne_ch96.qpf/.qsf/.sdc`), sacada
+  de su `Template_ch96`, con `sys/pins_ch96.tcl` y `sys/hps_ch96.tcl`.
+  `sys.qip` no incluye `sys_top.sdc`: la Chameleon96 usa `Osborne_ch96.sdc`.
 
-El Osborne no usa la DDR3 ni la SDRAM, así que la máquina (`rtl/`) no cambia.
-El puerto serie usa el UART del HPS, igual que en MiSTer.
+El Osborne no usa la DDR3, la SDRAM ni la PSRAM, así que la máquina (`rtl/`)
+y `Osborne.sv` son los mismos que en la DE10-Nano. El puerto serie usa el UART
+del HPS, igual que en MiSTer.
+
+### Actualizar el framework
+
+- Si Manuel actualiza Template_MiSTer_ch96, se copia su `sys/` entero aquí.
+- Si MiSTer actualiza su framework, se actualiza `sys/` en el repositorio
+  principal; aquí llega con la sincronización, y si choca con los cambios de
+  Manuel se resuelve a mano o se espera a que Manuel saque su versión.
 
 ## Sincronización con el repositorio principal
 
@@ -70,9 +85,10 @@ no se ejecuta (solo corre en shaeon/Osborne_MiSTer), así que no hay que tocarlo
 - Al subir una etiqueta `v*` crea una Release con el RBF.
 - En los pull requests solo compila.
 
-En local: abre `Osborne_ch96.qpf` en Quartus Prime Lite 17.0. Con 17.0.2:
-22 % de ALMs y todos los relojes con holgura positiva (peor setup +4,0 ns, en
-el reloj de 100 MHz del HPS).
+En local: abre `Osborne_ch96.qpf` en Quartus Prime Lite 17.0. Con 17.0.2 y el
+framework de Template_MiSTer_ch96: 22 % de ALMs y todos los relojes con
+holgura positiva (peor setup +4,3 ns, en el reloj de 100 MHz del HPS; el vídeo
+del core +4,8 ns).
 
 Sin probar en la placa todavía.
 
@@ -80,8 +96,10 @@ Sin probar en la placa todavía.
 
 - Core Osborne 1: Shaeon (Carlos Palmero), a partir del proyecto de Jeremy
   Soller (jackpot51). Ver `README_es.md`.
-- Port de MiSTer a la Chameleon96: Maverick (Maverick-Shark), de su rama
-  `ch96` de TS2068_MiSTer.
+- Framework de MiSTer para la Chameleon96: Manuel Teira (teiram),
+  [Template_MiSTer_ch96](https://github.com/teiram/Template_MiSTer_ch96).
+- Primer port a la Chameleon96: Maverick (Maverick-Shark), de su rama `ch96`
+  de TS2068_MiSTer.
 - Documentación de la placa: Manuel Teira (teiram),
   [chameleon96-workbench](https://github.com/teiram/chameleon96-workbench).
 
@@ -91,9 +109,10 @@ Sin probar en la placa todavía.
 
 Chameleon96 build of the Osborne 1 core from
 [shaeon/Osborne_MiSTer](https://github.com/shaeon/Osborne_MiSTer). The machine
-is unchanged; this repository adds the board wrapper (`ch96_top.sv`, pin and
-HPS files, `Osborne_ch96` Quartus revision) and the MiSTer framework changes
-from Maverick's TS2068_MiSTer port.
+is unchanged; `sys/` is Manuel Teira's Chameleon96 MiSTer framework
+([Template_MiSTer_ch96](https://github.com/teiram/Template_MiSTer_ch96)),
+with the board wrapper, fan PWM and PSRAM, plus the `Osborne_ch96` Quartus
+revision.
 
 - RBF files: `releases/Osborne_YYYYMMDD_ch96.rbf` (Chameleon96 only).
 - `sync.yml` merges the main repository every night, drops non-`_ch96` RBF

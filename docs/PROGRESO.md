@@ -104,3 +104,19 @@ Pendiente: Nuevo Video (necesita monrom 1.51), IEEE-488.
   viaja sin cambios al de la ch96 y no provoca conflictos
 - Quartus 17.0.2: Osborne_ch96 compila con holgura positiva en todos los
   relojes (peor setup +4,0 ns); sin probar en la placa
+
+## Framework de MiSTer al día (22/11/2026)
+
+- sys/ actualizado al Template_MiSTer de MiSTer-devel del 3/11/2026 (e901a9f),
+  la misma base que Template_MiSTer_ch96 de Manuel Teira
+- Osborne.sv declara los puertos con `include "sys/emu_ports.vh"`
+- Osborne_MiSTer_ch96 pasa a usar el sys/ de Template_MiSTer_ch96 tal cual
+  (ventilador PWM, PSRAM QSPI, OSD en color, búferes de memoria de la ch96) en
+  vez del port de Maverick; ch96_top.sv va en sys/
+- Diferencia entre los dos repositorios en sys/: exactamente la de Manuel.
+  Actualizar: framework de MiSTer -> sys/ del principal; cambios de Manuel ->
+  sys/ del repositorio ch96
+- Quartus 17.0.2: Osborne 24 % ALMs, peor setup +0,50 ns (HDMI 148,5 MHz,
+  normal en la DE10-Nano), emu +3,95 ns; Osborne_ch96 22 % ALMs, peor setup
+  +4,34 ns (HPS 100 MHz), emu +4,85 ns; sin holguras negativas de hold,
+  recovery ni removal. Sin probar en la placa

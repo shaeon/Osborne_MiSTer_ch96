@@ -351,7 +351,7 @@ cyclonev_hps_interface_clocks_resets clocks_resets(
 ,.h2f_user0_clk({
     h2f_user0_clk[0:0] // 0:0
   })
- ,.h2f_user1_clk({
+,.h2f_user1_clk({
     h2f_user1_clk[0:0] // 0:0
   })
 );
